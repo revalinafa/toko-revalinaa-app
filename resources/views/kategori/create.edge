@@ -1,0 +1,51 @@
+@layout.app({ title: "Tambah Kategori" })
+
+  @slot('meta')
+    <meta name="description" content="Halaman Tambah Kategori" />
+  @endslot
+  
+  @slot('content')
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="bi bi-plus-circle me-2"></i>Tambah Kategori Baru
+            </h5>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{{ route('kategori.store') }}">
+              {{{ csrfField() }}}
+              <div class="mb-3">
+                <label for="nama_kategori" class="form-label">
+                  Nama Kategori <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control {{ flashMessages.has('errors.nama_kategori') ? 'is-invalid': '' }}"
+                  id="nama_kategori"
+                  name="nama_kategori"
+                  placeholder="Masukkan nama kategori"
+                  value="{{ flashMessages.get('old.nama_kategori','') }}"
+                />
+                @if(flashMessages.has('errors.nama_kategori'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.nama_kategori') }}
+                  </div>
+                @endif
+              </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-check-circle me-1"></i>Simpan Kategori
+                        </button>
+                <a href="{{ route('kategori.index') }}" class="btn btn-secondary">
+                  <i class="bi bi-arrow-left me-1"></i>Kembali
+                        </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endslot
+@end

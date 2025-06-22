@@ -1,0 +1,66 @@
+@layout.app({title: "Edit Kategori" })
+
+  @slot('meta')
+    <meta name="description" content="Halaman Edit Kategori" />
+  @endslot
+  
+  @slot('content')
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="bi bi-pencil me-2"></i>Edit Kategori
+            </h5>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{{ route('kategori.update', [kategori.id]) }}">
+              {{{ csrfField() }}}
+              <div class="mb-3">
+                <label for="nama_kategori" class="form-label">
+                  Nama Kategori <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control {{ flashMessages.has('errors.nama_kategori') ? 'is-invalid': '' }}"
+                  id="nama_kategori"
+                  name="nama_kategori"
+                  value="{{ flashMessages.get('old.nama_kategori', kategori.namaKategori) }}"
+                  required
+                />                {{-- Sesuaikan dengan properti model --}}
+                @if(flashMessages.has('errors.nama_kategori'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.nama_kategori') }}
+                  </div>
+                @endif
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card bg-light">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <i class="bi bi-info-circle me-1"></i>Informasi Data
+                      </h6>
+                      <small class="text-muted">
+                        <strong>Dibuat:</strong>{{ kategori.createdAt.toFormat('dd/MM/yyyy HH:mm') }}<br />
+                        <strong>Diperbarui:</strong>{{ kategori.updatedAt.toFormat('dd/MM/yyyy HH:mm') }}
+                                    </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-3">
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-check-circle me-1"></i>Perbarui Kategori
+                        </button>
+                <a href="{{ route('kategori.index') }}" class="btn btn-secondary">
+                  <i class="bi bi-arrow-left me-1"></i>Kembali
+                        </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endslot
+@end
