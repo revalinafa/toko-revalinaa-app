@@ -1,7 +1,7 @@
-@layout.app({ title: "Tambah Supplier" })
+@layout.app({title: "Edit Supplier" })
 
   @slot('meta')
-    <meta name="description" content="Halaman Tambah Supplier" />
+    <meta name="description" content="Halaman Edit Supplier" />
   @endslot
   
   @slot('content')
@@ -10,11 +10,11 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              <i class="bi bi-plus-circle me-2"></i>Tambah Supplier Baru
+              <i class="bi bi-pencil me-2"></i>Edit Supplier
             </h5>
           </div>
           <div class="card-body">
-            <form method="POST" action="{{ route('supplier.store') }}">
+            <form method="POST" action="{{ route('supplier.update', [supplier.id]) }}">
               {{{ csrfField() }}}
               <div class="mb-3">
                 <label for="nama_supplier" class="form-label">
@@ -25,8 +25,7 @@
                   class="form-control {{ flashMessages.has('errors.nama_supplier') ? 'is-invalid': '' }}"
                   id="nama_supplier"
                   name="nama_supplier"
-                  placeholder="Masukkan nama supplier"
-                  value="{{ flashMessages.get('old.nama_supplier','') }}"
+                  value="{{ flashMessages.get('old.nama_supplier', supplier.namaSupplier) }}"
                   required
                 />
                 @if(flashMessages.has('errors.nama_supplier'))
@@ -43,7 +42,7 @@
                   name="alamat"
                   rows="3"
                   placeholder="Masukkan alamat (opsional)"
-                >{{ flashMessages.get('old.alamat','') }}</textarea>
+                >{{ flashMessages.get('old.alamat', supplier.alamat) }}</textarea>
                 @if(flashMessages.has('errors.alamat'))
                   <div class="invalid-feedback">
                     {{ flashMessages.get('errors.alamat') }}
@@ -58,7 +57,7 @@
                   id="telepon"
                   name="telepon"
                   placeholder="Masukkan nomor telepon (opsional)"
-                  value="{{ flashMessages.get('old.telepon','') }}"
+                  value="{{ flashMessages.get('old.telepon', supplier.telepon) }}"
                 />
                 @if(flashMessages.has('errors.telepon'))
                   <div class="invalid-feedback">
@@ -66,9 +65,24 @@
                   </div>
                 @endif
               </div>
-              <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card bg-light">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <i class="bi bi-info-circle me-1"></i>Informasi Data
+                      </h6>
+                      <small class="text-muted">
+                        <strong>Dibuat:</strong>{{ supplier.createdAt.toFormat('dd/MM/yyyy HH:mm') }}<br />
+                        <strong>Diperbarui:</strong>{{ supplier.updatedAt.toFormat('dd/MM/yyyy HH:mm') }}
+                                    </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-3">
                 <button type="submit" class="btn btn-primary">
-                  <i class="bi bi-check-circle me-1"></i>Simpan Supplier
+                  <i class="bi bi-check-circle me-1"></i>Perbarui Supplier
                         </button>
                 <a href="{{ route('supplier.index') }}" class="btn btn-secondary">
                   <i class="bi bi-arrow-left me-1"></i>Kembali

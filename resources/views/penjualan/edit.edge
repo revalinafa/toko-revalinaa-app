@@ -1,0 +1,115 @@
+@layout.app({title: "Edit Penjualan" })
+
+  @slot('meta')
+    <meta name="description" content="Halaman Edit Penjualan" />
+  @endslot
+  
+  @slot('content')
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="bi bi-pencil me-2"></i>Edit Penjualan
+            </h5>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{{ route('penjualan.update', [penjualan.id]) }}">
+              {{{ csrfField() }}}
+              <div class="mb-3">
+                <label for="produk_id" class="form-label">
+                  Produk <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select {{ flashMessages.has('errors.produk_id') ? 'is-invalid': '' }}"
+                  id="produk_id"
+                  name="produk_id"
+                  required
+                >
+                  <option value="">
+                    -- Pilih Produk --
+                  </option>
+                  @each((produkItem) in produks)
+                    {{-- Menggunakan nama berbeda agar tidak konflik dengan 'produk' dari controller --}}
+                    <option
+                      value="{{ produkItem.id }}"
+                      {{ (flashMessages.get('old.produk_id') == produkItem.id || penjualan.produkId == produkItem.id) ? 'selected' : '' }}
+                    >
+                      {{ produkItem.namaProduk }} (Stok: {{ produkItem.stok }})
+                    </option>
+                  @endeach
+                </select>
+                @if(flashMessages.has('errors.produk_id'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.produk_id') }}
+                  </div>
+                @endif
+              </div>
+              <div class="mb-3">
+                <label for="jumlah" class="form-label">
+                  Jumlah <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control {{ flashMessages.has('errors.jumlah') ? 'is-invalid': '' }}"
+                  id="jumlah"
+                  name="jumlah"
+                  placeholder="Masukkan jumlah penjualan"
+                  value="{{ flashMessages.get('old.jumlah', penjualan.jumlah) }}"
+                  required
+                  min="1"
+                />
+                @if(flashMessages.has('errors.jumlah'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.jumlah') }}
+                  </div>
+                @endif
+              </div>
+              <div class="mb-3">
+                <label for="tanggal" class="form-label">
+                  Tanggal <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  class="form-control {{ flashMessages.has('errors.tanggal') ? 'is-invalid': '' }}"
+                  id="tanggal"
+                  name="tanggal"
+                  value="{{ flashMessages.get('old.tanggal', penjualan.tanggal.toISODate()) }}"
+                  required
+                />
+                @if(flashMessages.has('errors.tanggal'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.tanggal') }}
+                  </div>
+                @endif
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card bg-light">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <i class="bi bi-info-circle me-1"></i>Informasi Data
+                      </h6>
+                      <small class="text-muted">
+                        <strong>Dibuat:</strong>{{ penjualan.createdAt.toFormat('dd/MM/yyyy HH:mm') }}<br />
+                        <strong>Diperbarui:</strong>{{ penjualan.updatedAt.toFormat('dd/MM/yyyy HH:mm') }}
+                                    </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-3">
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-check-circle me-1"></i>Perbarui Penjualan
+                        </button>
+                <a href="{{ route('penjualan.index') }}" class="btn btn-secondary">
+                  <i class="bi bi-arrow-left me-1"></i>Kembali
+                        </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endslot
+@end

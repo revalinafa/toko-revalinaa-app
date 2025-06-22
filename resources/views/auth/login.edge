@@ -1,0 +1,79 @@
+{{-- resources/views/auth/login.edge --}}
+
+@layout.auth({ title: "Halaman Login" })
+
+  @slot('meta')
+    <meta name="description" content="Halaman Login" />
+  @endslot
+  
+  @slot('content')
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow">
+          <div class="card-body p-4">
+            <div class="text-center mb-4">
+              <h3 class="card-title fw-bold">
+                Login
+              </h3>
+              <p class="text-muted">
+                Masukkan kredensial Anda untuk masuk
+              </p>
+            </div>
+
+            {{-- Flash Messages --}}
+            @if(flashMessages.has('error'))
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ flashMessages.get('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            @end
+            
+            @if(flashMessages.has('success'))
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ flashMessages.get('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            @end
+            
+            <form method="POST" action="{{ route('auth.check') }}">
+              {{{ csrfField() }}}
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Masukkan Alamat Email"
+                  value="{{ flashMessages.get('old.email','') }}"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  placeholder="Masukkan Password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mb-3">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                    </button>
+            </form>
+
+            <div class="text-center">
+              <p class="mb-0">
+                Belum punya akun?
+                        <a href="/register" class="text-decoration-none">Daftar sekarang</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endslot
+@end

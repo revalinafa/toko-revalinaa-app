@@ -1,0 +1,148 @@
+@layout.app({ title: "Daftar Penjualan" })
+
+  @slot('meta')
+    <meta name="description" content="Halaman Daftar Penjualan" />
+  @endslot
+  
+  @slot('content')
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="bi bi-cart me-2"></i>Daftar Penjualan
+            </h5>
+            <a href="{{ route('penjualan.create') }}" class="btn btn-success">
+              <i class="bi bi-plus-circle me-1"></i>Tambah Penjualan
+                </a>
+          </div>
+          <div class="card-body">
+            <form action="{{ route('penjualan.index') }}" method="GET" class="mb-3 row g-3 align-items-center">
+              {{-- Search Input --}}
+              <div class="col-md-4">
+                <input
+                  type="text"
+                  name="search"
+                  class="form-control"
+                  placeholder="Cari penjualan..."
+                  autocomplete="off"
+                  value="{{ search ?? '' }}"
+                />
+              </div>
+
+              {{-- Tombol Cari dan Reset --}}
+              <div class="col-md-2 d-flex gap-2">
+                <button class="btn btn-primary flex-grow-1">Cari</button>
+                @if(search != '')
+                  <a href="{{ route('penjualan.index') }}" class="btn btn-outline-danger flex-grow-1">Reset</a>
+                @endif
+              </div>
+            </form>
+            <div class="table-responsive">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th width="5%">
+                      No
+                    </th>
+                    <th width="30%">
+                      Produk
+                    </th>
+                    <th width="15%">
+                      Jumlah
+                    </th>
+                    <th width="20%">
+                      Total Harga
+                    </th>
+                    <th width="20%">
+                      Tanggal
+                    </th>
+                    <th width="10%">
+                      Aksi
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @each((item, index) in penjualans)
+                    <tr>
+                      <td>
+                        {{ ((penjualans.currentPage - 1) * penjualans.perPage) + index + 1 }}
+                      </td>
+                      <td>
+                        <strong>{{ item.produk.namaProduk ?? '-' }}</strong>
+                      </td>
+                      <td>
+                        {{ item.jumlah }}
+                      </td>
+                      <td>
+                        Rp {{ item.totalHarga.toLocaleString('id-ID') }}
+                      </td>
+                      <td>
+                        {{ item.tanggal.toFormat('dd/MM/yyyy') }}
+                      </td>
+                      <td>
+                        <div class="btn-group" role="group">
+                          <a
+                            href="{{ route('penjualan.show', [item.id]) }}"
+                            class="btn btn-sm btn-outline-info"
+                            title="Lihat Detail"
+                          >
+                            <i class="bi bi-eye"></i>
+                          </a>
+                          <a
+                            href="{{ route('penjualan.edit', item.id) }}"
+                            class="btn btn-sm btn-outline-warning"
+                            title="Edit"
+                          >
+                            <i class="bi bi-pencil"></i>
+                          </a>
+                          <form
+                            method="POST"
+                            action="{{ route('penjualan.destroy', [item.id]) }}"
+                            style="display: inline;"
+                            onsubmit="event.preventDefault(); confirmDelete(this);"
+                          >
+                            <input type="hidden" name="_method" value="POST" />
+                            {{{ csrfField() }}}
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </form>
+                        </div>
+                      </td>
+                    </tr>
+                  @endeach
+                </tbody>
+              </table>
+              <hr />
+              @if(penjualans.lastPage > 1)
+                <div class="d-flex justify-content-center mt-4">
+                  <nav>
+                    <ul class="pagination">
+                      @each (page in [...Array(penjualans.lastPage).keys()].map(n=>n+1))
+                        <li class="page-item {{ page === penjualans.currentPage ? 'active': '' }}">
+                          @if(search == '')
+                            <a class="page-link" href="{{ route('penjualan.index', {}, { qs: { page: page} }) }}">
+                              {{ page }}
+                                    </a>
+                          @else
+                            <a
+                              class="page-link"
+                              href="{{ route('penjualan.index', {}, { qs: { page: page, search: search || '' } }) }}"
+                            >
+                              {{ page }}
+                                    </a>
+                          @endif
+                        </li>
+                      @endeach
+                    </ul>
+                  </nav>
+                </div>
+              @endif
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endslot
+@end

@@ -1,0 +1,148 @@
+@layout.app({ title: "Tambah Produk" })
+
+  @slot('meta')
+    <meta name="description" content="Halaman Tambah Produk" />
+  @endslot
+  
+  @slot('content')
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="bi bi-plus-circle me-2"></i>Tambah Produk Baru
+            </h5>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{{ route('produk.store') }}">
+              {{{ csrfField() }}}
+              <div class="mb-3">
+                <label for="nama_produk" class="form-label">
+                  Nama Produk <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control {{ flashMessages.has('errors.nama_produk') ? 'is-invalid': '' }}"
+                  id="nama_produk"
+                  name="nama_produk"
+                  placeholder="Masukkan nama produk"
+                  value="{{ flashMessages.get('old.nama_produk','') }}"
+                  required
+                />
+                @if(flashMessages.has('errors.nama_produk'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.nama_produk') }}
+                  </div>
+                @endif
+              </div>
+              <div class="mb-3">
+                <label for="harga" class="form-label">
+                  Harga <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control {{ flashMessages.has('errors.harga') ? 'is-invalid': '' }}"
+                  id="harga"
+                  name="harga"
+                  placeholder="Masukkan harga produk"
+                  value="{{ flashMessages.get('old.harga','') }}"
+                  required
+                  min="0"
+                />
+                @if(flashMessages.has('errors.harga'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.harga') }}
+                  </div>
+                @endif
+              </div>
+              <div class="mb-3">
+                <label for="stok" class="form-label">
+                  Stok <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control {{ flashMessages.has('errors.stok') ? 'is-invalid': '' }}"
+                  id="stok"
+                  name="stok"
+                  placeholder="Masukkan jumlah stok"
+                  value="{{ flashMessages.get('old.stok','') }}"
+                  required
+                  min="0"
+                />
+                @if(flashMessages.has('errors.stok'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.stok') }}
+                  </div>
+                @endif
+              </div>
+              <div class="mb-3">
+                <label for="kategori_id" class="form-label">
+                  Kategori <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select {{ flashMessages.has('errors.kategori_id') ? 'is-invalid': '' }}"
+                  id="kategori_id"
+                  name="kategori_id"
+                  required
+                >
+                  <option value="">
+                    -- Pilih Kategori --
+                  </option>
+                  @each((kategori) in kategoris)
+                    <option
+                      value="{{ kategori.id }}"
+                      {{ flashMessages.get('old.kategori_id') == kategori.id ? 'selected' : '' }}
+                    >
+                      {{ kategori.namaKategori }}
+                    </option>
+                  @endeach
+                </select>
+                @if(flashMessages.has('errors.kategori_id'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.kategori_id') }}
+                  </div>
+                @endif
+              </div>
+              <div class="mb-3">
+                <label for="supplier_id" class="form-label">
+                  Supplier <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select {{ flashMessages.has('errors.supplier_id') ? 'is-invalid': '' }}"
+                  id="supplier_id"
+                  name="supplier_id"
+                  required
+                >
+                  <option value="">
+                    -- Pilih Supplier --
+                  </option>
+                  @each((supplier) in suppliers)
+                    <option
+                      value="{{ supplier.id }}"
+                      {{ flashMessages.get('old.supplier_id') == supplier.id ? 'selected' : '' }}
+                    >
+                      {{ supplier.namaSupplier }}
+                    </option>
+                  @endeach
+                </select>
+                @if(flashMessages.has('errors.supplier_id'))
+                  <div class="invalid-feedback">
+                    {{ flashMessages.get('errors.supplier_id') }}
+                  </div>
+                @endif
+              </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-check-circle me-1"></i>Simpan Produk
+                        </button>
+                <a href="{{ route('produk.index') }}" class="btn btn-secondary">
+                  <i class="bi bi-arrow-left me-1"></i>Kembali
+                        </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endslot
+@end

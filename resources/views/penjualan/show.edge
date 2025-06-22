@@ -1,0 +1,116 @@
+@layout.app({ title: "Detail Penjualan" })
+
+  @slot('meta')
+    <meta name="description" content="Halaman Detail Penjualan" />
+  @endslot
+  
+  @slot('content')
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="bi bi-eye me-2"></i>Detail Penjualan
+            </h5>
+            <div class="btn-group" role="group">
+              <form
+                method="POST"
+                action="{{ route('penjualan.destroy', [penjualan.id]) }}"
+                style="display: inline;"
+                onsubmit="event.preventDefault(); confirmDelete(this);"
+              >
+                <input type="hidden" name="_method" value="POST" />
+                {{{ csrfField() }}}
+                        <button type="submit" class="btn btn-danger btn-sm">
+                  <i class="bi bi-trash me-1"></i>Hapus
+                        </button>
+              </form>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-8">
+                <table class="table table-borderless">
+                  <tr>
+                    <td width="30%" class="fw-bold text-muted">
+                      ID:
+                    </td>
+                    <td>
+                      {{ penjualan.id }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold text-muted">
+                      Produk:
+                    </td>
+                    <td>
+                      <h5 class="text-primary mb-0">
+                        {{ penjualan.produk.namaProduk ?? '-' }}
+                      </h5>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold text-muted">
+                      Jumlah:
+                    </td>
+                    <td>
+                      {{ penjualan.jumlah }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold text-muted">
+                      Total Harga:
+                    </td>
+                    <td>
+                      Rp {{ penjualan.totalHarga.toLocaleString('id-ID') }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold text-muted">
+                      Tanggal:
+                    </td>
+                    <td>
+                      {{ penjualan.tanggal.toFormat('dd/MM/yyyy') }}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-md-4">
+                <div class="card bg-light">
+                  <div class="card-header">
+                    <h6 class="mb-0">
+                      <i class="bi bi-clock me-1"></i>Informasi Waktu
+                    </h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <small class="text-muted d-block">Dibuat pada:</small>
+                      <strong>{{ penjualan.createdAt.toFormat('dd MMMM HH:mm') }}</strong>                      <br />
+                      <small class="text-muted">{{ penjualan.createdAt.toFormat('HH:mm:ss') }}</small>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">Terakhir diperbarui:</small>
+                      <strong>{{ penjualan.updatedAt.toFormat('dd MMMM HH:mm') }}</strong>                      <br />
+                      <small class="text-muted">{{ penjualan.updatedAt.toFormat('HH:mm:ss') }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+              <a href="{{ route('penjualan.index') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Kembali ke Daftar
+                    </a>
+              <div>
+                <a href="{{ route('penjualan.edit', [penjualan.id]) }}" class="btn btn-warning me-2">
+                  <i class="bi bi-pencil me-1"></i>Edit Penjualan
+                        </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endslot
+@end
