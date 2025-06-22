@@ -1,0 +1,61 @@
+{{-- resources/views/dashboard.edge --}}
+
+@layout.app({ title: "Halaman Dashboard" })
+
+  @slot('meta')
+    <meta name="description" content="Halaman Dashboard" />
+  @endslot
+  
+  @slot('content')
+    <div class="container-fluid">
+      <div class="row">
+        <main class="col-md-12">
+          <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">
+              Dashboard
+            </h1>
+          </div>
+
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-body">
+                  {{-- auth.user.fullName akan tersedia jika autentikasi berhasil dan Anda memiliki kolom 'fullName' di model User --}}
+                  <h5 class="card-title">
+                    Selamat Datang, {{ auth.user.fullName }}!
+                  </h5>
+                  <p class="card-text">
+                    Anda berhasil login ke sistem. Selamat menggunakan aplikasi.
+                  </p>
+                  <p class="text-muted mb-0">
+                    <small>Email: {{ auth.user.email }}</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card bg-primary text-white">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h6 class="card-title">
+                        Status
+                      </h6>
+                      <h4>
+                        Online
+                      </h4>
+                    </div>
+                    <div class="align-self-center">
+                      <i class="bi bi-check-circle-fill fs-1"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  @endslot
+@end

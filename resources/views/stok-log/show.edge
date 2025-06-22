@@ -1,0 +1,76 @@
+@layout.app({ title: "Detail Log Stok" })
+
+  @slot('meta')
+    <meta name="description" content="Halaman Detail Log Stok" />
+  @endslot
+  
+  @slot('content')
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="bi bi-eye me-2"></i>Detail Log Stok
+            </h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-borderless">
+              <tr>
+                <td width="30%" class="fw-bold text-muted">
+                  ID:
+                </td>
+                <td>
+                  {{ stokLog.id }}
+                </td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-muted">
+                  Produk:
+                </td>
+                <td>
+                  <h5 class="text-primary mb-0">
+                    {{ stokLog.produk.namaProduk ?? '-' }}
+                  </h5>
+                </td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-muted">
+                  Jenis:
+                </td>
+                <td>
+                  @if(stokLog.jenis === 'masuk')
+                    <span class="badge bg-success">Masuk (Stok Bertambah)</span>
+                  @elseif(stokLog.jenis === 'keluar')
+                    <span class="badge bg-danger">Keluar (Stok Berkurang)</span>
+                  @else
+                    {{ stokLog.jenis }}
+                  @endif
+                </td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-muted">
+                  Jumlah:
+                </td>
+                <td>
+                  {{ stokLog.jumlah }}
+                </td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-muted">
+                  Tanggal:
+                </td>
+                <td>
+                  {{ stokLog.tanggal.toFormat('dd/MM/yyyy HH:mm:ss') }}
+                </td>
+              </tr>
+            </table>
+            <hr />
+            <a href="{{ route('stok_log.index') }}" class="btn btn-secondary">
+              <i class="bi bi-arrow-left me-1"></i>Kembali ke Daftar Log Stok
+                </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endslot
+@end
